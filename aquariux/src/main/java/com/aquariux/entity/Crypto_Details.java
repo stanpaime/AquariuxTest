@@ -1,5 +1,8 @@
 package com.aquariux.entity;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,35 +12,34 @@ import jakarta.persistence.Id;
 public class Crypto_Details {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int cryptoId;
-	private String cryptoName;
-	private String cryptoTicker;
-	private double cryptoPrice;
+	private String cryptoPair; //BTCUSDT or ETHUSDT
+	private BigDecimal bidPrice;
+	private BigDecimal askPrice;
+	private LocalDateTime lastUpdated;
 	
-	public int getCryptoId() {
-		return cryptoId;
+	public String getCryptoPair() {
+		return cryptoPair;
 	}
-	public void setCryptoId(int cryptoId) {
-		this.cryptoId = cryptoId;
+	public void setCryptoPair(String cryptoPair) {
+		this.cryptoPair = cryptoPair;
 	}
-	public String getCryptoName() {
-		return cryptoName;
+	public BigDecimal getBidPrice() {
+		return bidPrice;
 	}
-	public void setCryptoName(String cryptoName) {
-		this.cryptoName = cryptoName;
+	public void setBidPrice(BigDecimal bidPrice) {
+		this.bidPrice = bidPrice;
 	}
-	public String getCryptoTicker() {
-		return cryptoTicker;
+	public BigDecimal getAskPrice() {
+		return askPrice;
 	}
-	public void setCryptoTicker(String cryptoTicker) {
-		this.cryptoTicker = cryptoTicker;
+	public void setAskPrice(BigDecimal askPrice) {
+		this.askPrice = askPrice;
 	}
-	public double getCryptoPrice() {
-		return cryptoPrice;
+	public LocalDateTime getLastUpdated() {
+		return lastUpdated;
 	}
-	public void setCryptoPrice(double cryptoPrice) {
-		this.cryptoPrice = cryptoPrice;
+	public void setLastUpdated(LocalDateTime lastUpdated) {
+		this.lastUpdated = lastUpdated;
 	}
 	
 	

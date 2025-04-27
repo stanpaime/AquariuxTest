@@ -1,33 +1,48 @@
 package com.aquariux.entity;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Transactions {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int transacId;
-	private int accountId;
-	private String transacType;
-	private double transacAmount;
-	private String transacDate;
-	private String transacStatus;
+	private Long transacId;
 	
-	public int getTransacId() {
+	@ManyToOne
+	private User_Details user;
+	
+	private String cryptoPair; // BTCUSDT or ETHUSDT
+	private String transacType; //BUY or SELL
+	private BigDecimal transacAmount; //Amount of crypto 
+	private BigDecimal price; //Price in USDT
+	private String transacStatus; //Pending, Completed, Cancelled
+	private LocalDateTime timestamp;
+	
+	public Long getTransacId() {
 		return transacId;
 	}
-	public void setTransacId(int transacId) {
+	public void setTransacId(Long transacId) {
 		this.transacId = transacId;
 	}
-	public int getAccountId() {
-		return accountId;
+	public User_Details getUser() {
+		return user;
 	}
-	public void setAccountId(int accountId) {
-		this.accountId = accountId;
+	public void setUser(User_Details user) {
+		this.user = user;
+	}
+	public String getCryptoPair() {
+		return cryptoPair;
+	}
+	public void setCryptoPair(String cryptoPair) {
+		this.cryptoPair = cryptoPair;
 	}
 	public String getTransacType() {
 		return transacType;
@@ -35,17 +50,17 @@ public class Transactions {
 	public void setTransacType(String transacType) {
 		this.transacType = transacType;
 	}
-	public double getTransacAmount() {
+	public BigDecimal getTransacAmount() {
 		return transacAmount;
 	}
-	public void setTransacAmount(double transacAmount) {
+	public void setTransacAmount(BigDecimal transacAmount) {
 		this.transacAmount = transacAmount;
 	}
-	public String getTransacDate() {
-		return transacDate;
+	public BigDecimal getPrice() {
+		return price;
 	}
-	public void setTransacDate(String transacDate) {
-		this.transacDate = transacDate;
+	public void setPrice(BigDecimal price) {
+		this.price = price;
 	}
 	public String getTransacStatus() {
 		return transacStatus;
@@ -53,5 +68,14 @@ public class Transactions {
 	public void setTransacStatus(String transacStatus) {
 		this.transacStatus = transacStatus;
 	}
+	public LocalDateTime getTimestamp() {
+		return timestamp;
+	}
+	public void setTimestamp(LocalDateTime timestamp) {
+		this.timestamp = timestamp;
+	}
+	
+	
+	
 	
 }

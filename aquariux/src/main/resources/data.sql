@@ -1,5 +1,1 @@
-insert into User_Details
-values(10001, 'TESTUSER1');
-
-insert into User_Details
-values(10002, 'TESTUSER2');
+insert into User_Details values (0, 0, 50000.00, 3L,'John');
