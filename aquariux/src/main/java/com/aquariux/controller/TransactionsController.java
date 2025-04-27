@@ -26,8 +26,8 @@ public class TransactionsController {
 									@RequestParam String pair,
 									@RequestParam String type,
 									@RequestParam BigDecimal amount) {
-		transactionsService.trade(userId, pair, type, amount);
-		return ResponseEntity.ok("Trade completed successfully!");
+		
+		return transactionsService.trade(userId, pair, type, amount);
 	}
 	
 	@GetMapping("/transactions") 

@@ -17,6 +17,13 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 
 	@Override
+	public User_Details getUser(Long userId) {
+		User_Details user = userRepository.findById(userId).orElseThrow();
+		
+		return user;
+	}
+	
+	@Override
 	public Map<String, BigDecimal> getWalletBalance(Long userId) {
 		User_Details user = userRepository.findById(userId).orElseThrow();
 		Map<String, BigDecimal> wallet = new HashMap<>();

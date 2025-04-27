@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.aquariux.entity.Crypto_Details;
@@ -27,7 +29,7 @@ public class TransactionsServiceImpl implements TransactionsService {
 	private CryptoRepository cryptoRepo;
 	
 	@Override
-	public void trade(Long userId, String pair, String type, BigDecimal amount) {
+	public ResponseEntity<String> trade(Long userId, String pair, String type, BigDecimal amount) {
 		User_Details user = userRepository.findById(userId).orElseThrow();
 		Crypto_Details priceData = cryptoRepo.findById(pair).orElseThrow();
 		
@@ -39,12 +41,12 @@ public class TransactionsServiceImpl implements TransactionsService {
 			price = priceData.getBidPrice();
 		}
 		
-		
-//		BigDecimal price = "BUY".equalsIgnoreCase(type) ? priceData.getAskPrice() : priceData.getBidPrice();
 		BigDecimal totalCost = price.multiply(amount);
 		
 		if ("BUY".equalsIgnoreCase(type)) {
-			if (user.getUsdtBalance().compareTo(totalCost) < 0) throw new RuntimeException("Insufficient USDT");
+			if (user.getUsdtBalance().compareTo(totalCost) < 0) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insufficient USDT balance.");
+            }
 			
 			user.setUsdtBalance(user.getUsdtBalance().subtract(totalCost));
 			
@@ -53,12 +55,16 @@ public class TransactionsServiceImpl implements TransactionsService {
 			
 		} else if ("SELL".equalsIgnoreCase(type)) {
 			if ("BTCUSDT".equalsIgnoreCase(pair)) {
-				if (user.getBtcBalance().compareTo(amount) < 0) throw new RuntimeException("Insufficient BTC");
+				if (user.getBtcBalance().compareTo(amount) < 0) {
+	                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insufficient BTC balance.");
+	            }
 				
 				user.setBtcBalance(user.getBtcBalance().subtract(amount));
 				
 			} else if ("ETHUSDT".equalsIgnoreCase(pair)) {
-				if (user.getEthBalance().compareTo(amount) < 0) throw new RuntimeException("Insufficient ETH");
+				if (user.getEthBalance().compareTo(amount) < 0) {
+	                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insufficient ETH balance.");
+	            }
 				
 				user.setEthBalance(user.getEthBalance().subtract(amount));
 				
@@ -76,6 +82,7 @@ public class TransactionsServiceImpl implements TransactionsService {
 		
 		transactionsRepository.save(tx);
 		userRepository.save(user);
+		return ResponseEntity.ok("Trade successful.");
 	}
 	
 	@Override
